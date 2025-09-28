@@ -1,8 +1,18 @@
-FROM maven:3.8.4-eclipse-temurin-17 AS build
-WORKDIR /app
-COPY . .
-RUN mvn package
+# Use official Node.js image
+FROM node:16
 
-FROM tomcat:latest
-COPY --from=build /app/webapp/target/webapp.war /usr/local/tomcat/webapps/webapp.war
-RUN cp -R  /usr/local/tomcat/webapps.dist/*  /usr/local/tomcat/webapps
+# Set working directory inside container
+WORKDIR /app
+
+# Copy package.json and install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Expose port 8080 (same as Jenkins run command)
+EXPOSE 8080
+
+# Run the app
+CMD ["node", "server.js"]
