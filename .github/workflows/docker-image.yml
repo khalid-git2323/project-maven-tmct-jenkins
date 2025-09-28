@@ -23,5 +23,5 @@ jobs:
 
       - name: Run Container (clean old one if exists)
         run: |
-          docker rm -f myapp_container || true
+          docker rm -f myapp_container1 || true
           docker run -d -p 8081:8080 --name myapp_container2 myapp:latest
